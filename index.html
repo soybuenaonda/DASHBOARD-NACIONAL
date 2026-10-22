@@ -193,7 +193,6 @@
     
     .custom-bar-grid-dual { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
     
-    /* Contenedor envolvente */
     .table-responsive-wrapper { 
       overflow-x: auto; 
       border: 1px solid #cbd5e1;
@@ -204,7 +203,6 @@
     
     .custom-bar-list-tabular { display: flex; flex-direction: column; min-width: 500px; }
 
-    /* Ajuste de encabezados */
     .tabular-header-row {
       display: grid;
       grid-template-columns: minmax(110px, 1.8fr) minmax(80px, 1.2fr) 0.8fr 0.8fr 0.8fr 0.8fr;
@@ -221,13 +219,8 @@
       letter-spacing: 0.5px;
     }
 
-    .tabular-header-row > div {
-      text-align: center;
-    }
-
-    .tabular-header-row > .col-name-header {
-      text-align: left;
-    }
+    .tabular-header-row > div { text-align: center; }
+    .tabular-header-row > .col-name-header { text-align: left; }
 
     .tabular-data-row {
       display: grid;
@@ -357,7 +350,7 @@
         <span class="compact-kpi-value" id="kpi-registros">0</span>
       </div>
       <div class="compact-kpi">
-        <span class="compact-kpi-title">Homepass</span>
+        <span class="compact-kpi-title">HP</span>
         <span class="compact-kpi-value" id="kpi-hp">0</span>
       </div>
       <div class="compact-kpi">
@@ -365,11 +358,11 @@
         <span class="compact-kpi-value" id="kpi-condos">0</span>
       </div>
       <div class="compact-kpi">
-        <span class="compact-kpi-title">Estimado HP</span>
+        <span class="compact-kpi-title">HP x Condominio</span>
         <span class="compact-kpi-value" id="kpi-estimado-hp">0</span>
       </div>
       <div class="compact-kpi">
-        <span class="compact-kpi-title">Ductos</span>
+        <span class="compact-kpi-title">Pymes</span>
         <span class="compact-kpi-value" id="kpi-ductos">0</span>
       </div>
       <div class="compact-kpi highlight">
@@ -393,10 +386,10 @@
             <div class="tabular-header-row">
               <div class="col-name-header">Proyecto</div>
               <div>Progreso</div>
-              <div title="Homepass">HP</div>
+              <div title="HP">HP</div>
               <div title="Condominios">Condos</div>
-              <div title="Estimado HP">Est. HP</div>
-              <div title="Ductos">Ductos</div>
+              <div title="HP x Condominio">HP x Cond.</div>
+              <div title="Pymes">Pymes</div>
             </div>
             <div id="tabular-data-container-1"></div>
           </div>
@@ -408,10 +401,10 @@
             <div class="tabular-header-row">
               <div class="col-name-header">Proyecto</div>
               <div>Progreso</div>
-              <div title="Homepass">HP</div>
+              <div title="HP">HP</div>
               <div title="Condominios">Condos</div>
-              <div title="Estimado HP">Est. HP</div>
-              <div title="Ductos">Ductos</div>
+              <div title="HP x Condominio">HP x Cond.</div>
+              <div title="Pymes">Pymes</div>
             </div>
             <div id="tabular-data-container-2"></div>
           </div>
@@ -424,7 +417,7 @@
 </div>
 
   <script>
-    const SPREADSHEET_ID = '1IQUXWEYPf8k3l9-TH_2y26_GwdEEed272kNeNTYpCwk';
+    const SPREADSHEET_ID = '1A-1k3kKXJVbfQRMwBn7F2QWSOPn7Eq9-iAKQxFJoLvo';
 
     let rawZonasRecords = [];
     let statusZonasLoaded = false;
@@ -492,7 +485,6 @@
         return isNaN(n) ? 0 : (n <= 1 && n > 0 ? n * 100 : n);
       };
 
-      // Mapeo dinámico de índices basado en los títulos de la fila 1
       let headers = [];
       if (table.cols) {
         headers = table.cols.map(col => col && col.label ? col.label.trim().toUpperCase() : '');
@@ -504,29 +496,15 @@
           if (idx !== -1) return idx;
         }
         return -1;
-      };
+      }
 
-      // Búsqueda de índices (con valores predeterminados en caso de error de lectura de encabezado)
-      const idxProyecto = findIndex(['PROYECTO']);
-      const iProy = idxProyecto !== -1 ? idxProyecto : 2; 
-
-      const idxZona = findIndex(['ZONA (OZMAP ID)', 'ZONA', 'ZONA OZMAP']);
-      const iZona = idxZona !== -1 ? idxZona : 3;
-
-      const idxAvance = findIndex(['% RELEVAMIENTO', 'AVANCE']);
-      const iAva = idxAvance !== -1 ? idxAvance : 9;
-
-      const idxHp = findIndex(['HP']);
-      const iHp = idxHp !== -1 ? idxHp : 11;
-
-      const idxCondos = findIndex(['CONDOMINIOS']);
-      const iCon = idxCondos !== -1 ? idxCondos : 12;
-
-      const idxEstimadoHp = findIndex(['ESTIMADO HP', 'ESTIMADO']);
-      const iEst = idxEstimadoHp !== -1 ? idxEstimadoHp : 13;
-
-      const idxDuctos = findIndex(['DUCTOS']);
-      const iDuc = idxDuctos !== -1 ? idxDuctos : 14;
+      const iProy = findIndex(['PROYECTO']) !== -1 ? findIndex(['PROYECTO']) : 2; 
+      const iZona = findIndex(['ZONA (OZMAP ID)']) !== -1 ? findIndex(['ZONA (OZMAP ID)']) : 5;
+      const iAva = findIndex(['% RELEVAMIENTO']) !== -1 ? findIndex(['% RELEVAMIENTO']) : 12;
+      const iHp = findIndex(['HP']) !== -1 ? findIndex(['HP']) : 15;
+      const iCon = findIndex(['CONDOMINIOS']) !== -1 ? findIndex(['CONDOMINIOS']) : 16;
+      const iEst = findIndex(['HP X CONDOMINIO']) !== -1 ? findIndex(['HP X CONDOMINIO']) : 17;
+      const iDuc = findIndex(['PYMES']) !== -1 ? findIndex(['PYMES']) : 18;
 
       const grouped = {};
 
@@ -672,7 +650,6 @@
 
       const avgAvance = totalRegistros > 0 ? (filteredZonas.reduce((acc, r) => acc + r.avance, 0) / totalRegistros).toFixed(1) : 0;
 
-      // Asignar KPIs Globales Superiores
       document.getElementById('kpi-registros').innerText = totalRegistros;
       document.getElementById('kpi-hp').innerText = filteredZonas.reduce((a, r) => a + r.hp, 0).toLocaleString('es-VE');
       document.getElementById('kpi-condos').innerText = filteredZonas.reduce((a, r) => a + r.condos, 0).toLocaleString('es-VE');
@@ -683,7 +660,6 @@
       let displayRecords = [];
 
       if (zonaVal === 'ALL') {
-        // AGRUPACIÓN POR PROYECTO
         const projectGroups = {};
         filteredZonas.forEach(r => {
           if (!projectGroups[r.zonaHub]) {
@@ -713,7 +689,6 @@
         document.querySelectorAll('.col-name-header').forEach(el => el.innerText = 'Proyecto');
 
       } else {
-        // MOSTRAR ZONAS INDIVIDUALES
         displayRecords = filteredZonas.map(r => ({
           name: r.sector,
           avance: r.avance,
@@ -724,7 +699,6 @@
         document.querySelectorAll('.col-name-header').forEach(el => el.innerText = 'Zona');
       }
       
-      // ORDENAR: Menor avance promedio primero
       displayRecords.sort((a, b) => {
         if (a.avance !== b.avance) return a.avance - b.avance;
         return a.name.localeCompare(b.name);
