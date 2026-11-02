@@ -427,7 +427,7 @@
     document.getElementById('current-date-label').innerText = `Fecha de consulta: ${today.toLocaleDateString('es-VE')}`;
 
     window.addEventListener('DOMContentLoaded', () => {
-      fetchSheetData('PLANIFICACION CARACAS RELEVAMIENTO / INFORMES', 'handleZonasResponse');
+      fetchSheetData('Hoja 1', 'handleZonasResponse');
 
       window.addEventListener('click', (e) => {
         const dropdown = document.getElementById('dropdown-content');
@@ -643,7 +643,7 @@
       const uniqueProjectsCount = new Set(filteredZonas.map(r => r.zonaHub)).size;
 
       if (zonaVal === 'ALL') {
-        mainTitle.innerText = `CONTROL OPERATIVO CARACAS — PROYECTOS (${uniqueProjectsCount})`;
+        mainTitle.innerText = `CONTROL OPERATIVO NACIONAL — PROYECTOS (${uniqueProjectsCount})`;
       } else {
         mainTitle.innerText = `PROYECTO — ${zonaUp}`;
       }
